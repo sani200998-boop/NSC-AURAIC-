@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>NATIONAL SCIENCE FAIR 2026</title>
+  <!-- AURAIC FINAL: Supabase registration + admin verification + rejection + gate check-in -->
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { anton: ['Anton', 'sans-serif'], auraic: ['Anton', 'Kalpurush', 'sans-serif'] },
+          animation: { fadeIn: 'fadeIn .25s ease-out' },
+          keyframes: { fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } } }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+
+  <!-- Browser ESM import map: keeps the whole app in ONE HTML file. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.3.1",
+      "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+      "lucide-react": "https://esm.sh/lucide-react@0.468.0?deps=react@18.3.1",
+      "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.56.0"
+    }
+  }
+  </script>
+
+  <style>
+    :root {
+      --theme-primary: #f97316;
+      --theme-secondary: #fbbf24;
+    }
+    html, body, #root { min-height: 100%; margin: 0; background: #000; }
+    #root { font-family: 'Anton', 'Kalpurush', sans-serif; }
+    body { overflow-x: hidden; }
+    * { box-sizing: border-box; }
+    ::selection { background: var(--theme-primary); color: #000; }
+
+    /* =========================================================
+       GLOBAL 2-COLOR THEME SYSTEM — SAFE / COMPLETE
+       Primary + Secondary control every existing orange/amber/yellow
+       Tailwind accent WITHOUT changing any application logic.
+       Opacity, gradients, hover, focus and glow are preserved.
+       ========================================================= */
+    :root {
+      --theme-primary: #f97316;
+      --theme-secondary: #fbbf24;
+    }
+
+    /* Text accents */
+    [class~="text-orange-400"],
+    [class~="text-orange-500"],
+    [class~="text-orange-200"] {
+      color: var(--theme-primary) !important;
+    }
+    [class~="text-amber-200"],
+    [class~="text-amber-300"],
+    [class~="text-amber-400"],
+    [class~="text-yellow-400"] {
+      color: var(--theme-secondary) !important;
+    }
+
+    /* Solid accent backgrounds — ONLY exact utility tokens */
+    [class~="bg-orange-500"] {
+      background-color: var(--theme-primary) !important;
+    }
+    [class~="bg-amber-500"],
+    [class~="bg-yellow-500"] {
+      background-color: var(--theme-secondary) !important;
+    }
+
+    /* Translucent accent backgrounds — keep the original opacity feel */
+    [class~="bg-orange-500/10"] {
+      background-color: color-mix(in srgb, var(--theme-primary) 10%, transparent) !important;
+    }
+    [class~="bg-orange-500/20"] {
+      background-color: color-mix(in srgb, var(--theme-primary) 20%, transparent) !important;
+    }
+    [class~="bg-amber-500/10"] {
+      background-color: color-mix(in srgb, var(--theme-secondary) 10%, transparent) !important;
+    }
+    [class~="bg-amber-500/20"] {
+      background-color: color-mix(in srgb, var(--theme-secondary) 20%, transparent) !important;
+    }
+
+    /* Dark status/success accent surfaces */
+    [class~="bg-orange-950/40"] {
+      background-color: color-mix(in srgb, var(--theme-primary) 12%, #050505) !important;
+    }
+    [class~="bg-orange-950/60"] {
+      background-color: color-mix(in srgb, var(--theme-primary) 16%, #050505) !important;
+    }
+    [class~="bg-orange-950/80"] {
+      background-color: color-mix(in srgb, var(--theme-primary) 20%, #050505) !important;
+    }
+    [class~="bg-orange-950/90"] {
+      background-color: color-mix(in srgb, var(--theme-primary) 24%, #050505) !important;
+    }
+    [class~="bg-amber-950/80"] {
+      background-color: color-mix(in srgb, var(--theme-secondary) 20%, #050505) !important;
+    }
+    [class~="bg-amber-950/90"] {
+      background-color: color-mix(in srgb, var(--theme-secondary) 24%, #050505) !important;
+    }
+
+    /* Borders */
+    [class~="border-orange-500/30"],
+    [class~="border-orange-500/40"],
+    [class~="border-orange-500/50"],
+    [class~="border-orange-500/60"] {
+      border-color: color-mix(in srgb, var(--theme-primary) 60%, transparent) !important;
+    }
+    [class~="border-amber-500/30"],
+    [class~="border-amber-500/40"],
+    [class~="border-amber-500/60"] {
+      border-color: color-mix(in srgb, var(--theme-secondary) 60%, transparent) !important;
+    }
+    [class~="focus:border-orange-500"]:focus {
+      border-color: var(--theme-primary) !important;
+    }
+    [class~="hover:border-orange-500/50"]:hover {
+      border-color: color-mix(in srgb, var(--theme-primary) 50%, transparent) !important;
+    }
+
+    /* Hover backgrounds */
+    [class~="hover:bg-orange-400"]:hover {
+      background-color: var(--theme-primary) !important;
+    }
+
+    /* Selection */
+    [class~="selection:bg-orange-500"]::selection,
+    ::selection {
+      background-color: var(--theme-primary);
+      color: #000;
+    }
+
+    /* Accent controls */
+    [class~="accent-orange-500"] {
+      accent-color: var(--theme-primary) !important;
+    }
+    [class~="accent-amber-500"],
+    [class~="accent-yellow-500"] {
+      accent-color: var(--theme-secondary) !important;
+    }
+
+    /* Gradients — preserve direction and transparency */
+    [class~="from-orange-500"] {
+      --tw-gradient-from: var(--theme-primary) var(--tw-gradient-from-position) !important;
+      --tw-gradient-to: color-mix(in srgb, var(--theme-primary) 0%, transparent) var(--tw-gradient-to-position) !important;
+    }
+    [class~="via-amber-400"] {
+      --tw-gradient-via: var(--theme-secondary) var(--tw-gradient-via-position) !important;
+    }
+    [class~="to-yellow-500"] {
+      --tw-gradient-to: var(--theme-secondary) var(--tw-gradient-to-position) !important;
+    }
+
+    /* Glow / shadows */
+    [class~="shadow-orange-500/20"] {
+      --tw-shadow-color: color-mix(in srgb, var(--theme-primary) 20%, transparent) !important;
+    }
+    [class~="shadow-orange-500/30"] {
+      --tw-shadow-color: color-mix(in srgb, var(--theme-primary) 30%, transparent) !important;
+    }
+    [class~="shadow-orange-500/40"] {
+      --tw-shadow-color: color-mix(in srgb, var(--theme-primary) 40%, transparent) !important;
+    }
+
+    /* Any remaining theme-token variants used by Tailwind */
+    [class~="text-orange-500/30"] {
+      color: color-mix(in srgb, var(--theme-primary) 30%, transparent) !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!--
+    GLOBAL CONTROL DATABASE SETUP REQUIRED (one-time):
+    Create a Supabase table named `site_settings` with:
+      id          bigint primary key
+      settings    jsonb not null
+      updated_at  timestamptz default now()
+    Then enable the appropriate RLS policies for this site's admin workflow.
+    The app uses row id=1 for the global website settings.
+  -->
+  <!-- Supabase configuration -->
+  <script>
+    window.__SUPABASE_URL__ = "https://pyohiwowbqfygkyvsrab.supabase.co";
+    window.__SUPABASE_PUBLISHABLE_KEY__ = "sb_publishable_Gp9A6tomYLAUHY0Yj2Oi9g_WNkpuNMk";
+  </script>
+
+  <!-- Babel compiles the original JSX directly in this single HTML file. -->
+  <script src="https://unpkg.com/@babel/standalone@7.26.0/babel.min.js"></script>
+  <script type="text/babel" data-type="module" data-presets="react">
+import React, { useState, useEffect, useRef } from 'react';
+import { createRoot } from 'react-dom/client';
+import { createClient } from '@supabase/supabase-js';
+import { 
+  CheckCircle, Clock, AlertTriangle, Search, QrCode, 
+  House, UserPlus, ClipboardCheck, LockKeyhole,
+  Lock, Settings, LogOut, CreditCard, Users, Zap, 
+  ArrowRight, RefreshCw, X, ChevronRight, Award, School, Layers, Edit3, Trash2, Power, Database
+} from 'lucide-react';
+
+// ==========================================
+// SUPABASE INITIALIZATION
+// ==========================================
+const SUPABASE_URL = window.__SUPABASE_URL__;
+const SUPABASE_PUBLISHABLE_KEY = window.__SUPABASE_PUBLISHABLE_KEY__;
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY);
+
+const dbRowToParticipant = (r) => ({
+  id: r.id, regId: r.registration_code || r.reg_id || r.regId,
+  fullName: r.full_name || r.fullName, email: r.email, phone: r.phone,
+  school: r.school, studentClass: r.student_class || r.class_grade || r.studentClass,
+  category: r.category, projectName: r.project_name || r.projectName,
+  teamMembers: r.team_members || r.teamMembers || '', extraNotes: r.extra_notes || r.extraNotes || '',
+  trxId: r.bkash_trxid || r.trxid || r.trx_id || r.trxId,
+  paymentStatus: r.payment_status || r.paymentStatus || 'PENDING',
+  verificationCode: r.verification_code || r.verificationCode || null,
+  checkInStatus: r.check_in_status || r.checkInStatus || 'NOT_CHECKED_IN',
+  checkInTimestamp: r.check_in_timestamp || r.checkInTimestamp || null,
+  rejectionReason: r.rejection_reason || r.rejectionReason || null,
+  createdAt: r.created_at ? new Date(r.created_at).getTime() : (r.createdAt || Date.now()),
+  updatedAt: r.updated_at ? new Date(r.updated_at).getTime() : (r.updatedAt || Date.now()),
+  ...r
+});
+
+const participantToRow = (p) => ({
+  full_name: p.fullName, email: p.email, phone: p.phone, school: p.school,
+  class_grade: p.studentClass || '', category: p.category, project_name: p.projectName,
+  team_members: p.teamMembers || '', bkash_trxid: p.trxId, registration_code: p.regId,
+  payment_status: p.paymentStatus || 'PENDING', verification_code: p.verificationCode || null,
+  check_in_status: p.checkInStatus || 'NOT_CHECKED_IN', check_in_timestamp: p.checkInTimestamp || null,
+  rejection_reason: p.rejectionReason || null, updated_at: new Date().toISOString()
+});
+
+const fetchSupabaseParticipants = async () => {
+  const { data, error } = await supabase.from('registration').select('*').order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(dbRowToParticipant);
+};
+
+// Global website settings are stored in Supabase so OPEN/CLOSED status
+// is shared across every visitor/device. The HTML still keeps a local
+// fallback so the site remains usable if the settings table is unavailable.
+const fetchGlobalSettings = async () => {
+  const { data, error } = await supabase
+    .from('site_settings')
+    .select('settings')
+    .eq('id', 1)
+    .maybeSingle();
+  if (error) throw error;
+  return data?.settings || null;
+};
+
+const saveGlobalSettings = async (settings) => {
+  const { error } = await supabase
+    .from('site_settings')
+    .upsert({
+      id: 1,
+      settings,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'id' });
+  if (error) throw error;
+};
+
+const DEFAULT_SETTINGS = {
+  eventName: "NATIONAL SCIENCE FAIR 2026",
+  eventSubtitle: "OFFICIAL PARTICIPANT & ENTRY SYSTEM",
+  heroBadge: "NATIONAL YOUTH SCIENCE CHALLENGE 2026",
+  heroTitleLine1: "INNOVATE. CREATE.",
+  heroTitleHighlight: "DOMINATE.",
+  heroSubtext: "Welcome to the official participant portal for the National Science Fair 2026. Submit your project, verify payment, and claim your exclusive entry pass.",
+  organizer: "National Science & Tech Academy",
+  eventDate: "March 25-27, 2026",
+  eventVenue: "Bangabandhu International Conference Center, Dhaka",
+  regFee: 500,
+  bkashNumber: "01700000000 (Send Money / Merchant)",
+  deadline: "March 15, 2026",
+  contactEmail: "support@sciencefair.gov.bd",
+  contactPhone: "+880 1700-000000",
+  isOpen: true,
+  themePrimary: "#f97316",
+  themeSecondary: "#fbbf24",
+  categories: ["Robotics & IoT", "AI & Machine Learning", "Environmental Science", "Physics & Astronomy", "Biotech & Healthcare", "Software & Apps"],
+  announcement: "Registration is open! Complete your payment via bKash and submit your Transaction ID.",
+  footerLine1: "© ORGANISED BY AURAIC. All rights reserved.",
+  footerLine2: "SUNNY",
+  footerLine3: "BYZID"
+};
+
+// ==========================================
+// LOCAL PERSISTENCE FALLBACK
+// Keeps registrations/settings/audit logs after page refresh when Firebase
+// is not configured or temporarily unavailable.
+// ==========================================
+const STORAGE_PREFIX = 'NSF_AURAIC_2026_';
+const readStoredJSON = (key, fallback) => {
+  try {
+    const raw = localStorage.getItem(STORAGE_PREFIX + key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    console.warn('Local storage read failed:', e);
+    return fallback;
+  }
+};
+const writeStoredJSON = (key, value) => {
+  try {
+    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
+    return true;
+  } catch (e) {
+    console.warn('Local storage write failed:', e);
+    return false;
+  }
+};
+
+// Cryptographically safe code generator
+const generateUniqueCode = () => {
+  const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let result = 'NSF-';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
+
+// ==========================================
+// 2. 3D PARTICLE CANVAS BACKGROUND
+// ==========================================
+const Interactive3DBackground = ({ primaryColor = '#f97316', secondaryColor = '#fbbf24' }) => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
+    const handleMouseMove = (e) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    const hexToRgb = (hex) => {
+      const clean = String(hex || '#f97316').replace('#', '');
+      const full = clean.length === 3 ? clean.split('').map(c => c + c).join('') : clean;
+      const n = parseInt(full, 16);
+      if (Number.isNaN(n)) return { r: 249, g: 115, b: 22 };
+      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+    };
+    const primaryRgb = hexToRgb(primaryColor);
+    const secondaryRgb = hexToRgb(secondaryColor);
+    const particleCount = Math.min(Math.floor((width * height) / 14000), 75);
+    const particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      z: Math.random() * 1000 + 1,
+      radius: Math.random() * 2 + 1,
+      color: Math.random() > 0.35 ? `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, ` : `rgba(${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}, `,
+      alpha: Math.random() * 0.5 + 0.2,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4
+    }));
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const render = () => {
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Grid Pattern
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+      ctx.lineWidth = 1;
+      const gridSize = 65;
+      const offsetX = (mouse.x * 0.02) % gridSize;
+      const offsetY = (mouse.y * 0.02) % gridSize;
+
+      for (let x = offsetX; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = offsetY; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Cursor Ambient Orange Glow
+      const radialGradient = ctx.createRadialGradient(
+        mouse.x, mouse.y, 0,
+        mouse.x, mouse.y, Math.max(width, height) * 0.45
+      );
+      radialGradient.addColorStop(0, `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.12)`);
+      radialGradient.addColorStop(0.5, `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.03)`);
+      radialGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = radialGradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // Particles
+      particles.forEach((p) => {
+        if (!prefersReducedMotion) {
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+        }
+
+        const parallaxX = (mouse.x - width / 2) * (90 / p.z);
+        const parallaxY = (mouse.y - height / 2) * (90 / p.z);
+
+        ctx.beginPath();
+        ctx.arc(p.x + parallaxX, p.y + parallaxY, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `${p.color}${p.alpha})`;
+        ctx.fill();
+      });
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [primaryColor, secondaryColor]);
+
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
+};
+
+// ==========================================
+// 3. MAIN APPLICATION COMPONENT
+// ==========================================
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('home');
+  const [isDevMode, setIsDevMode] = useState(false);
+  const [settings, setSettings] = useState(() => ({ ...DEFAULT_SETTINGS, ...readStoredJSON('settings', {}) }));
+  // Apply the two admin-selected theme colors globally.
+  useEffect(() => {
+    const primary = /^#[0-9a-fA-F]{6}$/.test(settings.themePrimary || '') ? settings.themePrimary : '#f97316';
+    const secondary = /^#[0-9a-fA-F]{6}$/.test(settings.themeSecondary || '') ? settings.themeSecondary : '#fbbf24';
+    document.documentElement.style.setProperty('--theme-primary', primary);
+    document.documentElement.style.setProperty('--theme-secondary', secondary);
+  }, [settings.themePrimary, settings.themeSecondary]);
+  const [participants, setParticipants] = useState(() => readStoredJSON('participants', []));
+  const [auditLogs, setAuditLogs] = useState(() => readStoredJSON('auditLogs', []));
+  const [toast, setToast] = useState(null);
+  const [resetModalOpen, setResetModalOpen] = useState(false);
+  const [resetPass, setResetPass] = useState('');
+  const [settingsSyncing, setSettingsSyncing] = useState(false);
+  const [globalSettingsLoaded, setGlobalSettingsLoaded] = useState(false);
+
+  // Form State
+  const [regForm, setRegForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    school: '',
+    studentClass: '',
+    category: '',
+    projectName: '',
+    teamMembers: '',
+    extraNotes: '',
+    trxId: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastRegistered, setLastRegistered] = useState(null);
+
+  // Status Search State
+  const [statusSearchId, setStatusSearchId] = useState('');
+  const [foundParticipant, setFoundParticipant] = useState(null);
+  const [searchError, setSearchError] = useState('');
+
+  // Admin State & Verification Modals
+  const [adminPass, setAdminPass] = useState('');
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
+  
+  // Custom Modals to replace native prompt/confirm
+  const [verifyTarget, setVerifyTarget] = useState(null);
+  const [rejectTarget, setRejectTarget] = useState(null);
+  const [rejectReasonInput, setRejectReasonInput] = useState('');
+
+  // Check-In Scanner State
+  const [checkInCode, setCheckInCode] = useState('');
+  const [checkInResult, setCheckInResult] = useState(null);
+
+  // Admin Categories Edit Input (comma separated)
+  const [categoryInputText, setCategoryInputText] = useState('');
+
+  // Admin Filters
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('ALL');
+  const [paymentFilter, setPaymentFilter] = useState('ALL');
+
+  // Persist all local/dev data so a browser refresh does NOT reset the registration system.
+  useEffect(() => {
+    writeStoredJSON('participants', participants);
+  }, [participants]);
+
+  useEffect(() => {
+    writeStoredJSON('settings', settings);
+  }, [settings]);
+
+  useEffect(() => {
+    writeStoredJSON('auditLogs', auditLogs);
+  }, [auditLogs]);
+
+  // Ensure Anton + Kalpurush fonts are available
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Anton&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    const bnLink = document.createElement('link');
+    bnLink.href = 'https://fonts.maateen.me/kalpurush/font.css';
+    bnLink.rel = 'stylesheet';
+    document.head.appendChild(bnLink);
+  }, []);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  // Supabase initialization + realtime sync
+  useEffect(() => {
+    let channel;
+    let settingsChannel;
+    const init = async () => {
+      try {
+        const list = await fetchSupabaseParticipants();
+        setParticipants(list);
+        setIsDevMode(false);
+        const { data } = await supabase.from('registration').select('*').limit(1);
+        if (data !== null) setUser({ uid: 'supabase-anon' });
+
+        // Load the globally shared registration OPEN/CLOSED state.
+        try {
+          const remoteSettings = await fetchGlobalSettings();
+          if (remoteSettings) {
+            setSettings(prev => ({ ...prev, ...remoteSettings }));
+          }
+        } catch (settingsErr) {
+          console.warn('Global settings table unavailable; using local settings:', settingsErr);
+        } finally {
+          setGlobalSettingsLoaded(true);
+        }
+      } catch (err) {
+        console.warn('Supabase initialization failed; using local fallback:', err);
+        setIsDevMode(true);
+        setGlobalSettingsLoaded(true);
+      }
+    };
+    init();
+
+    channel = supabase.channel('registration-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'registration' }, async () => {
+        try { setParticipants(await fetchSupabaseParticipants()); } catch (e) { console.warn(e); }
+      }).subscribe();
+
+    // Keep OPEN/CLOSED state synchronized between browser sessions.
+    settingsChannel = supabase.channel('site-settings-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, async () => {
+        try {
+          const remoteSettings = await fetchGlobalSettings();
+          if (remoteSettings) setSettings(prev => ({ ...prev, ...remoteSettings }));
+        } catch (e) { console.warn('Settings realtime sync failed:', e); }
+      }).subscribe();
+
+    return () => {
+      if (channel) supabase.removeChannel(channel);
+      if (settingsChannel) supabase.removeChannel(settingsChannel);
+    };
+  }, []);
+
+  // Settings are stored locally for now; registrations are stored in Supabase.
+  // This preserves the existing admin customizer without requiring a second table.
+  useEffect(() => {
+    setCategoryInputText((settings.categories || []).join(', '));
+  }, []);
+
+  const recordAuditLog = async (action, targetId, details) => {
+    const logEntry = { action, targetId, details, adminUid: 'ADMIN', timestamp: Date.now() };
+    setAuditLogs(prev => [logEntry, ...prev]);
+  };
+
+  // Registration Submission
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!settings.isOpen) {
+      showToast("Registration is currently closed by the administrator.", "warning");
+      return;
+    }
+
+    if (!regForm.fullName || !regForm.email || !regForm.phone || !regForm.school || !regForm.category || !regForm.projectName || !regForm.trxId) {
+      showToast("Please fill in all required fields marked with *", "error");
+      return;
+    }
+
+    const cleanTrx = regForm.trxId.trim().toUpperCase();
+
+    const duplicateTrx = participants.find(p => p.trxId && p.trxId.toUpperCase() === cleanTrx);
+    if (duplicateTrx) {
+      showToast(`Transaction ID '${cleanTrx}' has already been submitted for Registration ${duplicateTrx.regId}!`, "error");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      let assignedRegId = "";
+      const timestamp = Date.now();
+
+      // Generate a unique registration ID for every participant.
+      // The ID is checked against Supabase before insert, so it remains
+      // unique even when registrations arrive from different devices.
+      const generateRegistrationId = () => {
+        const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        const bytes = new Uint32Array(10);
+        if (window.crypto && window.crypto.getRandomValues) {
+          window.crypto.getRandomValues(bytes);
+        } else {
+          for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 0xffffffff);
+        }
+        let token = '';
+        for (let i = 0; i < bytes.length; i++) token += chars[bytes[i] % chars.length];
+        return `NSF26-${token}`;
+      };
+
+      for (let attempt = 0; attempt < 12; attempt++) {
+        const candidate = generateRegistrationId();
+        const alreadyInMemory = participants.some(item => String(item.regId || '') === candidate);
+        if (alreadyInMemory) continue;
+
+        if (!isDevMode && isSupabaseConfigured) {
+          const { data: existingCode, error: codeCheckError } = await supabase
+            .from('registration')
+            .select('registration_code')
+            .eq('registration_code', candidate)
+            .maybeSingle();
+          if (codeCheckError) throw codeCheckError;
+          if (existingCode) continue;
+        }
+
+        assignedRegId = candidate;
+        break;
+      }
+
+      if (!assignedRegId) {
+        throw new Error('Could not generate a unique registration code. Please try again.');
+      }
+      const newRecord = {
+        regId: assignedRegId, fullName: regForm.fullName.trim(), email: regForm.email.trim(),
+        phone: regForm.phone.trim(), school: regForm.school.trim(), studentClass: regForm.studentClass.trim(),
+        category: regForm.category, projectName: regForm.projectName.trim(), teamMembers: regForm.teamMembers.trim(),
+        extraNotes: regForm.extraNotes.trim(), trxId: cleanTrx, paymentStatus: 'PENDING',
+        verificationCode: null, checkInStatus: 'NOT_CHECKED_IN', createdAt: timestamp, updatedAt: timestamp
+      };
+      if (!isDevMode && isSupabaseConfigured) {
+        const { error } = await supabase.from('registration').insert(participantToRow(newRecord));
+        if (error) throw error;
+      } else {
+        setParticipants(prev => [newRecord, ...prev]);
+      }
+
+      setLastRegistered({
+        regId: assignedRegId,
+        fullName: regForm.fullName,
+        trxId: cleanTrx,
+        category: regForm.category
+      });
+
+      setRegForm({
+        fullName: '', email: '', phone: '', school: '', studentClass: '',
+        category: '', projectName: '', teamMembers: '', extraNotes: '', trxId: ''
+      });
+      showToast(`Registration Successful! ID: ${assignedRegId}`, "success");
+      recordAuditLog("REGISTRATION_CREATED", assignedRegId, `Participant ${regForm.fullName} registered.`);
+    } catch (err) {
+      console.error("Registration submission failure:", err);
+      showToast("Submission failed. Please try again.", "error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Status Search
+  // FIX: Search Supabase directly so a participant's Registration Code
+  // works even when the local participant list has not finished syncing.
+  const handleStatusSearch = async (e) => {
+    e.preventDefault();
+    if (!statusSearchId.trim()) return;
+    setSearchError('');
+    setFoundParticipant(null);
+
+    const term = statusSearchId.trim().toUpperCase();
+
+    try {
+      let match = null;
+
+      if (!isDevMode && isSupabaseConfigured) {
+        const { data, error } = await supabase
+          .from('registration')
+          .select('*')
+          .or(`registration_code.eq.${term},verification_code.eq.${term},bkash_trxid.eq.${term}`)
+          .limit(1);
+
+        if (error) throw error;
+        if (data && data.length > 0) match = dbRowToParticipant(data[0]);
+      } else {
+        match = participants.find(p =>
+          String(p.regId || '').toUpperCase() === term ||
+          String(p.verificationCode || '').toUpperCase() === term ||
+          String(p.trxId || '').toUpperCase() === term
+        );
+      }
+
+      if (match) {
+        setFoundParticipant(match);
+      } else {
+        setSearchError(`No record found for "${statusSearchId}". Please double-check your Registration Code or Transaction ID.`);
+      }
+    } catch (err) {
+      console.error('Status search error:', err);
+      setSearchError('Unable to search registration status right now. Please try again.');
+    }
+  };
+
+  // Execute Payment Verification
+  const executeConfirmVerify = async () => {
+    if (!verifyTarget) return;
+    const p = verifyTarget;
+    const generatedCode = generateUniqueCode();
+    const timestamp = Date.now();
+
+    try {
+      if (!isDevMode && isSupabaseConfigured) {
+        const { error } = await supabase.from('registration').update({
+          payment_status: 'VERIFIED', verification_code: generatedCode, updated_at: new Date().toISOString()
+        }).eq('registration_code', p.regId);
+        if (error) throw error;
+        setParticipants(await fetchSupabaseParticipants());
+      } else {
+        setParticipants(prev => prev.map(item => item.regId === p.regId ? {
+          ...item,
+          paymentStatus: 'VERIFIED',
+          verificationCode: generatedCode,
+          verifiedAt: timestamp,
+          verifiedBy: 'ADMIN_DEV',
+          updatedAt: timestamp
+        } : item));
+      }
+
+      recordAuditLog("PAYMENT_VERIFIED", p.regId, `Verified payment TrxID: ${p.trxId}. Code ${generatedCode} assigned.`);
+      showToast(`Payment for ${p.regId} VERIFIED! Code: ${generatedCode}`, "success");
+      setVerifyTarget(null);
+    } catch (err) {
+      console.error("Payment verification error:", err);
+      showToast(`Failed to verify payment: ${err?.message || 'Database update denied.'}`, "error");
+    }
+  };
+
+  // Execute Payment Rejection
+  const executeConfirmReject = async () => {
+    if (!rejectTarget) return;
+    const p = rejectTarget;
+    const reason = rejectReasonInput.trim() || "Invalid Transaction ID or Amount mismatch";
+    const timestamp = Date.now();
+
+    try {
+      if (!isDevMode && isSupabaseConfigured) {
+        const { error } = await supabase.from('registration').update({
+          payment_status: 'REJECTED',
+          rejection_reason: reason,
+          verification_code: null,
+          updated_at: new Date().toISOString()
+        }).eq('registration_code', p.regId);
+        if (error) throw error;
+        setParticipants(await fetchSupabaseParticipants());
+      } else {
+        setParticipants(prev => prev.map(item => item.regId === p.regId ? {
+          ...item,
+          paymentStatus: 'REJECTED',
+          rejectionReason: reason,
+          rejectedAt: timestamp,
+          verificationCode: null,
+          updatedAt: timestamp
+        } : item));
+      }
+
+      recordAuditLog("PAYMENT_REJECTED", p.regId, `Rejected payment. Reason: ${reason}`);
+      showToast(`Payment for ${p.regId} REJECTED.`, "warning");
+      setRejectTarget(null);
+      setRejectReasonInput('');
+    } catch (err) {
+      console.error("Rejection error:", err);
+      showToast(`Failed to reject payment: ${err?.message || 'Database update denied.'}`, "error");
+    }
+  };
+
+  // Gate Check-in Handler
+  const handlePerformCheckIn = async (e) => {
+    e.preventDefault();
+    if (!checkInCode.trim()) return;
+
+    const cleanCode = checkInCode.trim().toUpperCase();
+    const match = participants.find(p => p.verificationCode?.toUpperCase() === cleanCode || p.regId?.toUpperCase() === cleanCode);
+
+    if (!match) {
+      setCheckInResult({
+        status: 'INVALID',
+        message: 'INVALID VERIFICATION CODE OR REGISTRATION ID.'
+      });
+      return;
+    }
+
+    if (match.paymentStatus !== 'VERIFIED') {
+      setCheckInResult({
+        status: 'UNVERIFIED_PAYMENT',
+        participant: match,
+        message: 'PARTICIPANT PAYMENT NOT VERIFIED YET!'
+      });
+      return;
+    }
+
+    if (match.checkInStatus === 'CHECKED_IN') {
+      setCheckInResult({
+        status: 'ALREADY_CHECKED_IN',
+        participant: match,
+        message: `ALREADY CHECKED IN AT ${new Date(match.checkInTimestamp || Date.now()).toLocaleTimeString()}`
+      });
+      return;
+    }
+
+    const timestamp = Date.now();
+    try {
+      if (!isDevMode && isSupabaseConfigured) {
+        const { error } = await supabase.from('registration').update({
+          check_in_status: 'CHECKED_IN', check_in_timestamp: new Date(timestamp).toISOString(), updated_at: new Date().toISOString()
+        }).eq('registration_code', match.regId);
+        if (error) throw error;
+        setParticipants(await fetchSupabaseParticipants());
+      } else {
+        setParticipants(prev => prev.map(item => item.regId === match.regId ? {
+          ...item,
+          checkInStatus: 'CHECKED_IN',
+          checkInTimestamp: timestamp,
+          checkedInBy: 'ADMIN_DEV',
+          updatedAt: timestamp
+        } : item));
+      }
+
+      setCheckInResult({
+        status: 'SUCCESS',
+        participant: match,
+        message: '✓ VERIFIED PARTICIPANT — ENTRY ALLOWED'
+      });
+
+      recordAuditLog("CHECK_IN_COMPLETED", match.regId, `Participant ${match.fullName} checked in.`);
+      showToast(`Check-In Approved: ${match.fullName}`, "success");
+    } catch (err) {
+      console.error("Check-in error:", err);
+      showToast(`Failed to complete check-in: ${err?.message || 'Database update denied.'}`, "error");
+    }
+  };
+
+  // Save Extended Event Settings (Full Admin Customization)
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+
+    const parsedCategories = categoryInputText
+      .split(',')
+      .map(c => c.trim())
+      .filter(c => c.length > 0);
+
+    const validHex = v => /^#[0-9a-fA-F]{6}$/.test(String(v || ''));
+    if (!validHex(settings.themePrimary) || !validHex(settings.themeSecondary)) {
+      showToast('Theme colors must be valid 6-digit HEX codes.', 'error');
+      return;
+    }
+
+    const updatedSettings = {
+      ...settings,
+      themePrimary: settings.themePrimary.toUpperCase(),
+      themeSecondary: settings.themeSecondary.toUpperCase(),
+      categories: parsedCategories.length > 0 ? parsedCategories : settings.categories,
+      isOpen: Boolean(settings.isOpen)
+    };
+
+    try {
+      setSettingsSyncing(true);
+      setSettings(updatedSettings);
+      writeStoredJSON('settings', updatedSettings);
+
+      if (!isDevMode && isSupabaseConfigured) {
+        await saveGlobalSettings(updatedSettings);
+      }
+
+      recordAuditLog(
+        "SETTINGS_UPDATED",
+        "CONFIG",
+        `Updated website settings. Registration is now ${updatedSettings.isOpen ? 'OPEN' : 'CLOSED'}.`
+      );
+      showToast(
+        updatedSettings.isOpen
+          ? "Registration is now OPEN for everyone."
+          : "Registration is now CLOSED for everyone.",
+        "success"
+      );
+    } catch (err) {
+      console.error("Settings update failed:", err);
+      showToast(
+        `Could not sync global settings: ${err?.message || 'Database denied the update.'}`,
+        "error"
+      );
+    } finally {
+      setSettingsSyncing(false);
+    }
+  };
+
+  // Quick global OPEN/CLOSE controls.
+  const handleRegistrationToggle = async (open) => {
+    const updatedSettings = { ...settings, isOpen: Boolean(open) };
+    try {
+      setSettingsSyncing(true);
+      setSettings(updatedSettings);
+      writeStoredJSON('settings', updatedSettings);
+
+      if (!isDevMode && isSupabaseConfigured) {
+        await saveGlobalSettings(updatedSettings);
+      }
+
+      recordAuditLog(
+        open ? "REGISTRATION_OPENED" : "REGISTRATION_CLOSED",
+        "REGISTRATION",
+        open ? "Administrator opened registration globally." : "Administrator closed registration globally."
+      );
+      showToast(open ? "REGISTRATION OPENED GLOBALLY." : "REGISTRATION CLOSED GLOBALLY.", "success");
+    } catch (err) {
+      console.error("Registration toggle failed:", err);
+      showToast(`Could not change registration status: ${err?.message || 'Database update denied.'}`, "error");
+    } finally {
+      setSettingsSyncing(false);
+    }
+  };
+
+  // The same administrator password is required again immediately before
+  // the destructive "Reset All Registrations" action.
+  const isValidAdminPassword = (password) =>
+    password === 'oo++mm++gg' || password === '01710842060';
+
+  const executeResetAllRegistrations = async () => {
+    if (!isValidAdminPassword(resetPass)) {
+      showToast("Invalid Admin Password. No registration data was deleted.", "error");
+      setResetPass('');
+      return;
+    }
+
+    try {
+      setSettingsSyncing(true);
+
+      if (!isDevMode && isSupabaseConfigured) {
+        const { error } = await supabase
+          .from('registration')
+          .delete()
+          .neq('registration_code', '__NEVER_DELETE_THIS_ROW__');
+
+        if (error) throw error;
+
+        setParticipants(await fetchSupabaseParticipants());
+      } else {
+        setParticipants([]);
+      }
+
+      // Also clear local fallback registrations/audit data on this browser.
+      writeStoredJSON('participants', []);
+      writeStoredJSON('auditLogs', []);
+
+      recordAuditLog(
+        "ALL_REGISTRATIONS_RESET",
+        "ALL",
+        "Administrator permanently deleted all registration records."
+      );
+
+      setResetPass('');
+      setResetModalOpen(false);
+      setLastRegistered(null);
+      setFoundParticipant(null);
+      showToast("ALL REGISTRATION DATA HAS BEEN DELETED.", "success");
+    } catch (err) {
+      console.error("Reset registrations failed:", err);
+      showToast(
+        `Reset failed: ${err?.message || 'Database denied deletion. Check Supabase DELETE policy/RLS.'}`,
+        "error"
+      );
+    } finally {
+      setSettingsSyncing(false);
+    }
+  };
+
+  // Admin Auth Logic
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
+    if (isValidAdminPassword(adminPass)) {
+      setIsAdminLoggedIn(true);
+      setAdminModalOpen(false);
+      setAdminPass('');
+      setActiveTab('admin');
+      showToast("Authenticated as Science Fair Administrator", "success");
+    } else {
+      showToast("Invalid Admin Password! Access Denied.", "error");
+    }
+  };
+
+  // Filtered Participants
+  const filteredParticipants = participants.filter(p => {
+    const matchesSearch = 
+      p.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.regId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.trxId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.school?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.verificationCode && p.verificationCode.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesCategory = categoryFilter === 'ALL' || p.category === categoryFilter;
+    const matchesPayment = paymentFilter === 'ALL' || p.paymentStatus === paymentFilter;
+
+    return matchesSearch && matchesCategory && matchesPayment;
+  });
+
+  // Admin Metrics
+  const totalRegs = participants.length;
+  const pendingPayments = participants.filter(p => p.paymentStatus === 'PENDING').length;
+  const verifiedPayments = participants.filter(p => p.paymentStatus === 'VERIFIED').length;
+  const rejectedPayments = participants.filter(p => p.paymentStatus === 'REJECTED').length;
+  const checkedInCount = participants.filter(p => p.checkInStatus === 'CHECKED_IN').length;
+
+  return (
+    <div className="min-h-screen bg-black text-white font-auraic selection:bg-orange-500 selection:text-black relative overflow-x-hidden">
+      
+      {/* 3D Canvas */}
+      <Interactive3DBackground primaryColor={settings.themePrimary} secondaryColor={settings.themeSecondary} />
+
+      {/* Floating Toast Notification */}
+      {toast && (
+        <div className={`fixed top-5 right-5 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-2xl border transition-all duration-300 animate-bounce ${
+          toast.type === 'success' ? 'bg-orange-950/90 border-orange-500/60 text-orange-200' :
+          toast.type === 'error' ? 'bg-rose-950/90 border-rose-500/60 text-rose-200' :
+          toast.type === 'warning' ? 'bg-amber-950/90 border-amber-500/60 text-amber-200' :
+          'bg-zinc-900/90 border-zinc-700 text-zinc-200'
+        }`}>
+          {toast.type === 'success' && <CheckCircle className="w-5 h-5 text-orange-400" />}
+          {toast.type === 'error' && <AlertTriangle className="w-5 h-5 text-rose-400" />}
+          {toast.type === 'warning' && <AlertTriangle className="w-5 h-5 text-amber-400" />}
+          <span className="text-sm font-semibold tracking-wide">{toast.message}</span>
+        </div>
+      )}
+
+      {/* Header */}
+      <header className="sticky top-0 z-30 bg-black/70 backdrop-blur-2xl border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between relative">
+          
+          {/* Title Area WITHOUT Shield Icon */}
+          <div 
+            onClick={() => setActiveTab('home')}
+            className="flex items-center gap-3 cursor-pointer group"
+          >
+            <div>
+              <span className="text-xl sm:text-2xl font-black tracking-wider text-white block leading-none font-['Anton'] uppercase">
+                {settings.eventName}
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-orange-400 font-bold block mt-1">
+                {settings.eventSubtitle}
+              </span>
+            </div>
+          </div>
+
+          {/* Desktop / Tablet Navigation — centered */}
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-1 bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-2xl">
+            {[
+              { id: 'home', label: 'Home', icon: House },
+              { id: 'categories', label: 'Categories', icon: Layers },
+              { id: 'register', label: 'Register', icon: UserPlus },
+              { id: 'payment', label: 'Payment', icon: CreditCard },
+              { id: 'status', label: 'Check Status', icon: ClipboardCheck },
+            ].map(tab => {
+              const Icon = tab.icon;
+              return (
+                <button key={tab.id} onClick={() => setActiveTab(tab.id)} title={tab.label} aria-label={tab.label}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${activeTab === tab.id ? 'bg-orange-500 text-black shadow-lg shadow-orange-500/40 scale-105' : 'text-zinc-300 hover:text-white hover:bg-white/10'}`}>
+                  <Icon className="w-[18px] h-[18px]" strokeWidth={1.8} />
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Admin Button: 🔒 LOCK ICON ONLY */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => isAdminLoggedIn ? setActiveTab('admin') : setAdminModalOpen(true)}
+              title={isAdminLoggedIn ? "Open Admin Panel" : "Admin Login"}
+              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 border backdrop-blur-2xl opacity-50 hover:opacity-75 ${
+                isAdminLoggedIn
+                  ? 'bg-orange-500/20 text-orange-400 border-orange-500/60 shadow-lg shadow-orange-500/20 hover:scale-105'
+                  : 'bg-white/5 hover:bg-white/10 text-orange-500 border-white/10 hover:scale-105'
+              }`}
+            >
+              <LockKeyhole className="w-3 h-3" strokeWidth={1.7} />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation — a normal row directly below the header/title */}
+        <div className="md:hidden flex items-center justify-center gap-2 px-3 py-2.5 border-t border-white/10 bg-black/60 backdrop-blur-2xl overflow-x-auto no-scrollbar">
+          {[
+            { id: 'home', label: 'Home', icon: House },
+            { id: 'categories', label: 'Categories', icon: Layers },
+            { id: 'register', label: 'Register', icon: UserPlus },
+            { id: 'payment', label: 'Payment', icon: CreditCard },
+            { id: 'status', label: 'Status', icon: ClipboardCheck },
+            ...(isAdminLoggedIn ? [{ id: 'admin', label: 'Admin', icon: LockKeyhole }] : [])
+          ].map(tab => {
+            const Icon = tab.icon;
+            return (
+              <button key={tab.id} onClick={() => setActiveTab(tab.id)} title={tab.label} aria-label={tab.label}
+                className={`w-10 h-10 shrink-0 rounded-xl flex items-center justify-center transition-all ${activeTab === tab.id ? 'bg-orange-500 text-black shadow-md shadow-orange-500/30' : 'bg-white/5 text-zinc-300 border border-white/5'}`}>
+                <Icon className="w-[18px] h-[18px]" strokeWidth={1.8} />
+              </button>
+            );
+          })}
+        </div>
+      </header>
+
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
+
+        {/* ------------------------------------------ */}
+        {/* TAB 1: HOME SECTION                        */}
+        {/* ------------------------------------------ */}
+        {activeTab === 'home' && (
+          <div className="space-y-16 animate-fadeIn">
+            
+            {/* Announcement Banner */}
+            {settings.announcement && (
+              <div
+                className="rounded-3xl p-5 flex items-center gap-4 backdrop-blur-2xl shadow-2xl"
+                style={{
+                  background: "linear-gradient(90deg, color-mix(in srgb, var(--theme-primary) 18%, #050505) 0%, #111111 55%, #000000 100%)",
+                  border: "1px solid color-mix(in srgb, var(--theme-primary) 60%, transparent)",
+                  boxShadow: "0 0 28px color-mix(in srgb, var(--theme-primary) 18%, transparent)"
+                }}
+              >
+                <Zap
+                  className="w-6 h-6 shrink-0 animate-pulse"
+                  style={{ color: "var(--theme-primary)" }}
+                />
+                <p
+                  className="text-xs sm:text-sm font-medium tracking-wide"
+                  style={{ color: "var(--theme-secondary)" }}
+                >
+                  {settings.announcement}
+                </p>
+              </div>
+            )}
+
+            {/* Nike Anton Styled Hero Section */}
+            <div className="text-center space-y-6 pt-6">
+              <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-widest backdrop-blur-xl">
+                <Award className="w-4 h-4" /> {settings.heroBadge}
+              </div>
+
+              <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white uppercase leading-none max-w-5xl mx-auto font-['Anton']">
+                {settings.heroTitleLine1} <span className="text-white">{settings.heroTitleHighlight}</span>
+              </h1>
+
+              <p className="text-zinc-400 text-base sm:text-xl max-w-3xl mx-auto font-light leading-relaxed">
+                {settings.heroSubtext}
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                {settings.isOpen ? (
+                  <button
+                    onClick={() => setActiveTab('register')}
+                    className="px-9 py-5 rounded-2xl bg-orange-500 hover:bg-orange-400 text-black font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-2xl shadow-orange-500/40 hover:scale-105 flex items-center gap-3 font-['Anton']"
+                  >
+                    Register Team Now <ArrowRight className="w-5 h-5" />
+                  </button>
+                ) : (
+                  <div className="px-8 py-4 rounded-2xl bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold text-sm">
+                    REGISTRATION CLOSED FOR THIS SEASON
+                  </div>
+                )}
+                
+                <button
+                  onClick={() => setActiveTab('status')}
+                  className="px-9 py-5 rounded-2xl bg-white/5 hover:bg-white/10 text-white border border-white/15 font-bold text-sm transition-all duration-300 backdrop-blur-2xl flex items-center gap-3"
+                >
+                  <Search className="w-5 h-5 text-orange-400" />
+                  Check Registration Status
+                </button>
+              </div>
+            </div>
+
+            {/* Event Metrics Glass Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {[
+                { title: 'EVENT DATE', val: settings.eventDate, icon: Clock, desc: 'Official schedule' },
+                { title: 'VENUE', val: settings.eventVenue, icon: School, desc: 'In-person exhibition' },
+                { title: 'REGISTRATION FEE', val: `BDT ${settings.regFee}`, icon: CreditCard, desc: 'Per team/project' },
+                { title: 'DEADLINE', val: settings.deadline, icon: AlertTriangle, desc: 'Strict cutoff' },
+              ].map((item, idx) => {
+                const IconComp = item.icon;
+                return (
+                  <div key={idx} className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-2xl hover:border-orange-500/50 transition-all duration-300 hover:-translate-y-1 shadow-xl">
+                    <IconComp className="w-7 h-7 text-orange-400 mb-4" />
+                    <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase block">{item.title}</span>
+                    <h3 className="text-xl font-bold text-white mt-1 font-['Anton'] tracking-wide">{item.val}</h3>
+                    <p className="text-xs text-zinc-400 mt-2 font-light">{item.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Workflow Steps */}
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-2xl space-y-8 shadow-2xl">
+              <div className="text-center space-y-2">
+                <h2 className="text-3xl font-black uppercase tracking-wider text-white font-['Anton']">4-Step Registration Process</h2>
+                <p className="text-xs text-zinc-400">Easy step-by-step verification process for students</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { num: '01', title: 'Submit Details', desc: 'Fill out participant, team, project, and category details in the form.' },
+                  { num: '02', title: 'Pay via bKash', desc: `Send BDT ${settings.regFee} to ${settings.bkashNumber} & save TrxID.` },
+                  { num: '03', title: 'Admin Verification', desc: 'Admin matches bKash records and issues your Verification Code.' },
+                  { num: '04', title: 'Event Entry', desc: 'Show your Unique Code or QR at the gate for Instant Check-in.' },
+                ].map((step, idx) => (
+                  <div key={idx} className="relative p-6 rounded-2xl bg-black/60 border border-white/10 space-y-3 backdrop-blur-xl">
+                    <span className="text-4xl font-black text-orange-500/30 font-['Anton']">{step.num}</span>
+                    <h4 className="font-bold text-white uppercase text-sm tracking-wide">{step.title}</h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------ */}
+        {/* TAB 3: CATEGORIES                          */}
+        {/* ------------------------------------------ */}
+        {activeTab === 'categories' && (
+          <div className="space-y-8 max-w-5xl mx-auto animate-fadeIn">
+            <div className="text-center space-y-2">
+              <h2 className="text-4xl font-black uppercase text-white font-['Anton']">Competition Categories</h2>
+              <p className="text-xs text-zinc-400">Choose the field that best fits your scientific project</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {settings.categories.map((cat, idx) => (
+                <div key={idx} className="bg-white/5 border border-white/10 rounded-3xl p-7 backdrop-blur-2xl hover:border-orange-500/50 transition-all duration-300 space-y-4 shadow-xl">
+                  <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold font-['Anton'] text-xl">
+                    {idx + 1}
+                  </div>
+                  <h3 className="text-xl font-bold text-white font-['Anton']">{cat}</h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    Submit innovative research, physical hardware prototypes, or software algorithms in {cat}.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setRegForm(prev => ({ ...prev, category: cat }));
+                      setActiveTab('register');
+                    }}
+                    className="text-xs text-orange-400 font-bold hover:underline flex items-center gap-1 uppercase tracking-wider pt-2"
+                  >
+                    Register in category <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------ */}
+        {/* TAB 4: REGISTRATION FORM                   */}
+        {/* ------------------------------------------ */}
+        {activeTab === 'register' && (
+          <div className="max-w-3xl mx-auto space-y-8 animate-fadeIn">
+            <div className="text-center space-y-2">
+              <h2 className="text-4xl font-black uppercase text-white font-['Anton'] tracking-wide">Participant Registration</h2>
+              <p className="text-xs text-zinc-400">Please fill out all required fields carefully.</p>
+            </div>
+
+            {!settings.isOpen ? (
+              <div className="bg-rose-950/40 border border-rose-500/40 rounded-3xl p-8 sm:p-10 backdrop-blur-2xl text-center space-y-5 shadow-2xl">
+                <div className="w-16 h-16 bg-rose-500/10 border border-rose-500/30 rounded-full flex items-center justify-center mx-auto text-rose-400">
+                  <Lock className="w-8 h-8" />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-widest text-rose-300 font-bold">Registration Unavailable</div>
+                  <h3 className="text-3xl font-black text-white font-['Anton'] mt-2 uppercase">
+                    REGISTRATION CLOSED FOR THIS SEASON
+                  </h3>
+                  <p className="text-xs text-zinc-400 mt-3">
+                    Registration has been closed by the administrator. Please check back later.
+                  </p>
+                </div>
+              </div>
+            ) : lastRegistered ? (
+              <div className="bg-orange-950/60 border border-orange-500/50 rounded-3xl p-8 backdrop-blur-2xl text-center space-y-6 shadow-2xl">
+                <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto text-orange-400">
+                  <CheckCircle className="w-10 h-10" />
+                </div>
+
+                <div className="space-y-2">
+                  <span className="text-xs font-mono uppercase tracking-widest text-orange-400 font-bold">Registration Submitted</span>
+                  <h3 className="text-3xl font-black text-white font-['Anton']">YOUR REGISTRATION ID:</h3>
+                  <div className="text-4xl font-mono font-bold text-orange-400 tracking-wider py-3 bg-black/60 rounded-2xl border border-orange-500/40 max-w-xs mx-auto">
+                    {lastRegistered.regId}
+                  </div>
+                </div>
+
+                <p className="text-xs text-zinc-300 max-w-md mx-auto leading-relaxed">
+                  Thank you, <strong className="text-white">{lastRegistered.fullName}</strong>! Your registration is currently <span className="text-amber-400 font-bold">PENDING PAYMENT VERIFICATION</span>. Once the Admin verifies your bKash TrxID ({lastRegistered.trxId}), your official Verification Pass Code will be issued.
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-4 pt-2">
+                  <button
+                    onClick={() => {
+                      setStatusSearchId(lastRegistered.regId);
+                      setActiveTab('status');
+                    }}
+                    className="px-7 py-3.5 rounded-xl bg-orange-500 text-black font-extrabold text-xs uppercase tracking-wider hover:bg-orange-400 transition-all shadow-lg shadow-orange-500/30"
+                  >
+                    View Status Page
+                  </button>
+                  <button
+                    onClick={() => setLastRegistered(null)}
+                    className="px-7 py-3.5 rounded-xl bg-white/10 text-white font-bold text-xs uppercase tracking-wider hover:bg-white/20 transition-all border border-white/10"
+                  >
+                    Register Another Team
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleRegisterSubmit} className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-10 backdrop-blur-2xl space-y-6 shadow-2xl">
+                
+                {/* Step 1 */}
+                <div className="space-y-4">
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-orange-400 flex items-center gap-2">
+                    <Users className="w-4 h-4" /> 1. Student / Team Leader Information
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs text-zinc-300 font-medium mb-1">Full Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Tanvir Ahmed"
+                        value={regForm.fullName}
+                        onChange={e => setRegForm({ ...regForm, fullName: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-zinc-300 font-medium mb-1">Email Address *</label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="student@school.edu.bd"
+                        value={regForm.email}
+                        onChange={e => setRegForm({ ...regForm, email: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs text-zinc-300 font-medium mb-1">Phone Number *</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="01712345678"
+                        value={regForm.phone}
+                        onChange={e => setRegForm({ ...regForm, phone: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-zinc-300 font-medium mb-1">Class / Grade</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Class 10 / HSC 1st Year"
+                        value={regForm.studentClass}
+                        onChange={e => setRegForm({ ...regForm, studentClass: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-zinc-300 font-medium mb-1">School / Institution *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Dhaka Residential Model College"
+                      value={regForm.school}
+                      onChange={e => setRegForm({ ...regForm, school: e.target.value })}
+                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="space-y-4 pt-4 border-t border-white/10">
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-orange-400 flex items-center gap-2">
+                    <Award className="w-4 h-4" /> 2. Science Project Details
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs text-zinc-300 font-medium mb-1">Category *</label>
+                      <select
+                        required
+                        value={regForm.category}
+                        onChange={e => setRegForm({ ...regForm, category: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-zinc-200 focus:border-orange-500 focus:outline-none transition-colors"
+                      >
+                        <option value="">Select Category</option>
+                        {settings.categories.map((cat, idx) => (
+                          <option key={idx} value={cat} className="bg-zinc-900 text-white">{cat}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs text-zinc-300 font-medium mb-1">Project Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. AI Plant Disease Detection Rover"
+                        value={regForm.projectName}
+                        onChange={e => setRegForm({ ...regForm, projectName: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-zinc-300 font-medium mb-1">Team Members (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="Names of co-participants (comma separated)"
+                      value={regForm.teamMembers}
+                      onChange={e => setRegForm({ ...regForm, teamMembers: e.target.value })}
+                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="space-y-4 pt-4 border-t border-white/10">
+                  <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-orange-400 flex items-center gap-2">
+                    <CreditCard className="w-4 h-4" /> 3. bKash Manual Payment Submission
+                  </h3>
+
+                  <div className="bg-orange-950/40 border border-orange-500/30 rounded-2xl p-4 text-xs space-y-2">
+                    <p className="text-zinc-300">
+                      Send <strong className="text-orange-400 font-bold">BDT {settings.regFee}</strong> to bKash Number: <strong className="text-white font-mono">{settings.bkashNumber}</strong>
+                    </p>
+                    <p className="text-zinc-400">
+                      After sending money, paste the exact bKash Transaction ID (TrxID) below.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-zinc-300 font-medium mb-1">bKash Transaction ID (TrxID) *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. BX982310AZ"
+                      value={regForm.trxId}
+                      onChange={e => setRegForm({ ...regForm, trxId: e.target.value })}
+                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm font-mono text-orange-400 uppercase tracking-widest focus:border-orange-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 text-black font-black text-sm uppercase tracking-wider transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 font-['Anton']"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <RefreshCw className="w-5 h-5 animate-spin" />
+                      Generating Registration ID...
+                    </>
+                  ) : (
+                    'Submit Registration & Generate ID'
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+
+        {/* ------------------------------------------ */}
+        {/* TAB 5: PAYMENT INSTRUCTIONS                */}
+        {/* ------------------------------------------ */}
+        {activeTab === 'payment' && (
+          <div className="max-w-3xl mx-auto space-y-8 animate-fadeIn">
+            <div className="text-center space-y-2">
+              <h2 className="text-4xl font-black uppercase text-white font-['Anton']">Payment Instructions</h2>
+              <p className="text-xs text-zinc-400">Official step-by-step bKash payment guide</p>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-2xl space-y-6 shadow-2xl">
+              <div className="flex items-center gap-4 p-5 rounded-2xl bg-orange-500/10 border border-orange-500/30">
+                <CreditCard className="w-9 h-9 text-orange-400 shrink-0" />
+                <div>
+                  <span className="text-[10px] font-mono text-orange-400 uppercase tracking-widest font-bold">Official Merchant / Account</span>
+                  <p className="text-xl font-mono font-bold text-white">{settings.bkashNumber}</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-sm uppercase tracking-wider font-['Anton']">How to pay via bKash App or Dialing *247#</h3>
+                <ol className="list-decimal list-inside space-y-3 text-xs text-zinc-300 leading-relaxed">
+                  <li>Open your bKash App or dial <strong className="text-white">*247#</strong>.</li>
+                  <li>Select <strong className="text-white">Send Money</strong> or <strong className="text-white">Payment</strong>.</li>
+                  <li>Enter Number: <strong className="text-orange-400 font-mono">{settings.bkashNumber}</strong></li>
+                  <li>Enter Amount: <strong className="text-orange-400 font-mono">BDT {settings.regFee}</strong></li>
+                  <li>Enter Reference: <strong className="text-white font-mono">SCIENCE FAIR</strong></li>
+                  <li>Enter your bKash PIN to confirm payment.</li>
+                  <li>Copy the SMS Transaction ID (TrxID) and paste it into the registration form.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------ */}
+        {/* TAB 6: CHECK STATUS                        */}
+        {/* ------------------------------------------ */}
+        {activeTab === 'status' && (
+          <div className="max-w-2xl mx-auto space-y-8 animate-fadeIn">
+            <div className="text-center space-y-2">
+              <h2 className="text-4xl font-black uppercase text-white font-['Anton']">Check Status</h2>
+              <p className="text-xs text-zinc-400">Enter your Registration ID, Transaction ID, or Verification Code</p>
+            </div>
+
+            <form onSubmit={handleStatusSearch} className="flex gap-2">
+              <input
+                type="text"
+                required
+                placeholder="Enter Registration ID (e.g. NSF26-0001) or Code"
+                value={statusSearchId}
+                onChange={e => setStatusSearchId(e.target.value)}
+                className="flex-1 bg-black/60 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white focus:border-orange-500 focus:outline-none font-mono"
+              />
+              <button
+                type="submit"
+                className="px-7 py-4 bg-orange-500 hover:bg-orange-400 text-black font-black text-xs uppercase tracking-wider rounded-2xl transition-all shadow-lg shadow-orange-500/30 font-['Anton']"
+              >
+                Search
+              </button>
+            </form>
+
+            {searchError && (
+              <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl text-rose-300 text-xs flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                {searchError}
+              </div>
+            )}
+
+            {foundParticipant && (
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-2xl space-y-6 shadow-2xl">
+                <div className="flex justify-between items-start border-b border-white/10 pb-4">
+                  <div>
+                    <span className="text-[10px] font-mono text-orange-400 uppercase tracking-widest font-bold">Registration ID</span>
+                    <h3 className="text-3xl font-mono font-bold text-white">{foundParticipant.regId}</h3>
+                  </div>
+
+                  <span className={`px-4 py-1.5 rounded-full text-xs font-bold ${
+                    foundParticipant.paymentStatus === 'VERIFIED' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40' :
+                    foundParticipant.paymentStatus === 'REJECTED' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' :
+                    'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  }`}>
+                    {foundParticipant.paymentStatus}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <span className="text-zinc-400 block">Participant Name:</span>
+                    <p className="font-bold text-white mt-0.5 text-sm">{foundParticipant.fullName}</p>
+                  </div>
+                  <div>
+                    <span className="text-zinc-400 block">School:</span>
+                    <p className="font-bold text-white mt-0.5 text-sm">{foundParticipant.school}</p>
+                  </div>
+                  <div>
+                    <span className="text-zinc-400 block">Category:</span>
+                    <p className="font-bold text-white mt-0.5 text-sm">{foundParticipant.category}</p>
+                  </div>
+                  <div>
+                    <span className="text-zinc-400 block">Project Name:</span>
+                    <p className="font-bold text-white mt-0.5 text-sm">{foundParticipant.projectName}</p>
+                  </div>
+                  <div>
+                    <span className="text-zinc-400 block">Submitted TrxID:</span>
+                    <p className="font-mono text-orange-400 mt-0.5">{foundParticipant.trxId}</p>
+                  </div>
+                  <div>
+                    <span className="text-zinc-400 block">Check-In Status:</span>
+                    <p className={`font-bold mt-0.5 ${foundParticipant.checkInStatus === 'CHECKED_IN' ? 'text-orange-400' : 'text-zinc-400'}`}>
+                      {foundParticipant.checkInStatus}
+                    </p>
+                  </div>
+                </div>
+
+                {foundParticipant.paymentStatus === 'VERIFIED' ? (
+                  <div className="bg-black/70 border border-orange-500/50 rounded-2xl p-6 text-center space-y-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-orange-400 font-bold">Official Event Gate Pass</span>
+                    <h4 className="text-xs text-zinc-300">Show this code or QR at gate entry:</h4>
+                    <div className="text-4xl font-mono font-black text-orange-400 tracking-widest bg-orange-950/40 py-4 rounded-xl border border-orange-500/40">
+                      {foundParticipant.verificationCode}
+                    </div>
+
+                    <div className="inline-block p-3 bg-white rounded-xl mt-2">
+                      <div className="w-24 h-24 bg-black rounded flex items-center justify-center text-[10px] font-mono text-orange-400 text-center p-2 font-bold">
+                        [QR: {foundParticipant.verificationCode}]
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
+                    Payment is currently pending admin verification. Your gate code will unlock as soon as the bKash TrxID is validated.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ------------------------------------------ */}
+        {/* TAB 7: ADMIN PANEL                         */}
+        {/* ------------------------------------------ */}
+        {activeTab === 'admin' && isAdminLoggedIn && (
+          <div className="space-y-8 animate-fadeIn">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/10 pb-6">
+              <div>
+                <h2 className="text-4xl font-black uppercase text-white flex items-center gap-3 font-['Anton']">
+                  <Lock className="w-8 h-8 text-orange-500" /> Admin Control Center
+                </h2>
+                <p className="text-xs text-zinc-400">Full website text customization, bKash verification, and gate check-in</p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setIsAdminLoggedIn(false);
+                  setActiveTab('home');
+                  showToast("Logged out of Admin Portal", "info");
+                }}
+                className="px-5 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold flex items-center gap-2 uppercase tracking-wider"
+              >
+                <LogOut className="w-4 h-4" /> Exit Admin
+              </button>
+            </div>
+
+            {/* Admin Metrics */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {[
+                { label: 'Total Regs', val: totalRegs, color: 'text-white' },
+                { label: 'Pending Payment', val: pendingPayments, color: 'text-amber-400' },
+                { label: 'Verified Payments', val: verifiedPayments, color: 'text-orange-400' },
+                { label: 'Rejected Payments', val: rejectedPayments, color: 'text-rose-400' },
+                { label: 'Checked In', val: checkedInCount, color: 'text-yellow-400' },
+              ].map((m, idx) => (
+                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-2xl">
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block font-bold">{m.label}</span>
+                  <span className={`text-3xl font-black font-['Anton'] ${m.color}`}>{m.val}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              
+              {/* Left Column: Gate Check-in & Comprehensive Admin Customization */}
+              <div className="md:col-span-1 space-y-6">
+                
+                {/* Gate Check-in Box */}
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-2xl space-y-4 shadow-xl">
+                  <h3 className="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2 font-['Anton']">
+                    <QrCode className="w-5 h-5 text-orange-400" /> Gate Check-In Verification
+                  </h3>
+
+                  <form onSubmit={handlePerformCheckIn} className="space-y-3">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter Verification Code (e.g. NSF-X7K9P2)"
+                      value={checkInCode}
+                      onChange={e => setCheckInCode(e.target.value)}
+                      className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm font-mono text-orange-400 uppercase tracking-widest focus:border-orange-500 focus:outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-orange-500/30 font-['Anton']"
+                    >
+                      Verify & Allow Entry
+                    </button>
+                  </form>
+
+                  {checkInResult && (
+                    <div className={`p-4 rounded-2xl border text-xs space-y-2 ${
+                      checkInResult.status === 'SUCCESS' ? 'bg-orange-950/80 border-orange-500/60 text-orange-200' :
+                      checkInResult.status === 'ALREADY_CHECKED_IN' ? 'bg-amber-950/80 border-amber-500/60 text-amber-200' :
+                      'bg-rose-950/80 border-rose-500/60 text-rose-200'
+                    }`}>
+                      <div className="font-bold uppercase tracking-wide flex items-center gap-2">
+                        {checkInResult.status === 'SUCCESS' && <CheckCircle className="w-4 h-4 text-orange-400" />}
+                        {checkInResult.message}
+                      </div>
+
+                      {checkInResult.participant && (
+                        <div className="space-y-1 pt-2 border-t border-white/10 font-mono text-[11px]">
+                          <div>Name: {checkInResult.participant.fullName}</div>
+                          <div>Reg ID: {checkInResult.participant.regId}</div>
+                          <div>School: {checkInResult.participant.school}</div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Extended Website Text & Config Customization Form */}
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-2xl space-y-4 shadow-xl">
+                  <h3 className="font-bold text-white text-sm uppercase tracking-wider flex items-center gap-2 font-['Anton']">
+                    <Edit3 className="w-5 h-5 text-orange-400" /> All-Text & Event Customizer
+                  </h3>
+
+                  <div className="rounded-2xl border border-white/10 bg-black/50 p-4 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div>
+                        <div className="text-sm font-bold text-white uppercase tracking-wider font-['Anton']">🎨 Theme Colors</div>
+                        <div className="text-[10px] text-zinc-500 mt-1">Only 2 HEX colors. Everything else updates automatically.</div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Primary Color</label>
+                        <div className="flex gap-2">
+                          <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(settings.themePrimary || '') ? settings.themePrimary : '#f97316'} onChange={e => setSettings({ ...settings, themePrimary: e.target.value })} className="w-10 h-10 rounded-lg bg-black border border-white/10 p-0.5" />
+                          <input type="text" value={settings.themePrimary || '#f97316'} onChange={e => setSettings({ ...settings, themePrimary: e.target.value })} placeholder="#FF6A00" className="min-w-0 flex-1 bg-black/60 border border-white/10 rounded-lg p-2.5 text-white uppercase" maxLength="7" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Secondary Color</label>
+                        <div className="flex gap-2">
+                          <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(settings.themeSecondary || '') ? settings.themeSecondary : '#fbbf24'} onChange={e => setSettings({ ...settings, themeSecondary: e.target.value })} className="w-10 h-10 rounded-lg bg-black border border-white/10 p-0.5" />
+                          <input type="text" value={settings.themeSecondary || '#fbbf24'} onChange={e => setSettings({ ...settings, themeSecondary: e.target.value })} placeholder="#FFB000" className="min-w-0 flex-1 bg-black/60 border border-white/10 rounded-lg p-2.5 text-white uppercase" maxLength="7" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="h-2 rounded-full" style={{ background: `linear-gradient(90deg, ${settings.themePrimary || '#f97316'}, ${settings.themeSecondary || '#fbbf24'})` }}></div>
+                  </div>
+
+                  <form onSubmit={handleSaveSettings} className="space-y-3 text-xs">
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Header Event Name</label>
+                      <input
+                        type="text"
+                        value={settings.eventName}
+                        onChange={e => setSettings({ ...settings, eventName: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Header Subtitle</label>
+                      <input
+                        type="text"
+                        value={settings.eventSubtitle}
+                        onChange={e => setSettings({ ...settings, eventSubtitle: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Hero Badge Text</label>
+                      <input
+                        type="text"
+                        value={settings.heroBadge}
+                        onChange={e => setSettings({ ...settings, heroBadge: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Hero Title Line 1</label>
+                        <input
+                          type="text"
+                          value={settings.heroTitleLine1}
+                          onChange={e => setSettings({ ...settings, heroTitleLine1: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Hero Highlight</label>
+                        <input
+                          type="text"
+                          value={settings.heroTitleHighlight}
+                          onChange={e => setSettings({ ...settings, heroTitleHighlight: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-orange-400 font-bold"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Hero Subtext Paragraph</label>
+                      <textarea
+                        rows="3"
+                        value={settings.heroSubtext}
+                        onChange={e => setSettings({ ...settings, heroSubtext: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Top Announcement Bar</label>
+                      <input
+                        type="text"
+                        value={settings.announcement}
+                        onChange={e => setSettings({ ...settings, announcement: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-zinc-400 block mb-1">bKash Number</label>
+                        <input
+                          type="text"
+                          value={settings.bkashNumber}
+                          onChange={e => setSettings({ ...settings, bkashNumber: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Fee (BDT)</label>
+                        <input
+                          type="number"
+                          value={settings.regFee}
+                          onChange={e => setSettings({ ...settings, regFee: Number(e.target.value) })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Categories (Comma separated)</label>
+                      <input
+                        type="text"
+                        value={categoryInputText}
+                        onChange={e => setCategoryInputText(e.target.value)}
+                        placeholder="Robotics, AI, Biotech..."
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Event Date</label>
+                        <input
+                          type="text"
+                          value={settings.eventDate}
+                          onChange={e => setSettings({ ...settings, eventDate: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Deadline</label>
+                        <input
+                          type="text"
+                          value={settings.deadline}
+                          onChange={e => setSettings({ ...settings, deadline: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Venue Address</label>
+                      <input
+                        type="text"
+                        value={settings.eventVenue}
+                        onChange={e => setSettings({ ...settings, eventVenue: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Organizer</label>
+                        <input
+                          type="text"
+                          value={settings.organizer || ''}
+                          onChange={e => setSettings({ ...settings, organizer: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Contact Phone</label>
+                        <input
+                          type="text"
+                          value={settings.contactPhone || ''}
+                          onChange={e => setSettings({ ...settings, contactPhone: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-zinc-400 block mb-1">Contact Email</label>
+                      <input
+                        type="text"
+                        value={settings.contactEmail || ''}
+                        onChange={e => setSettings({ ...settings, contactEmail: e.target.value })}
+                        className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                      />
+                    </div>
+
+                    <div className="border-t border-white/10 pt-4 mt-2 space-y-3">
+                      <div className="text-orange-400 font-bold uppercase tracking-wider font-['Anton']">
+                        Footer Text Customization
+                      </div>
+                      <div>
+                        <label className="text-zinc-400 block mb-1">Footer Line 1</label>
+                        <input
+                          type="text"
+                          value={settings.footerLine1 || ''}
+                          onChange={e => setSettings({ ...settings, footerLine1: e.target.value })}
+                          className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-zinc-400 block mb-1">Footer Line 2</label>
+                          <input
+                            type="text"
+                            value={settings.footerLine2 || ''}
+                            onChange={e => setSettings({ ...settings, footerLine2: e.target.value })}
+                            className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-zinc-400 block mb-1">Footer Line 3</label>
+                          <input
+                            type="text"
+                            value={settings.footerLine3 || ''}
+                            onChange={e => setSettings({ ...settings, footerLine3: e.target.value })}
+                            className="w-full bg-black/60 border border-white/10 rounded-lg p-2.5 text-white"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-2">
+                      <input
+                        type="checkbox"
+                        id="isOpenCheck"
+                        checked={settings.isOpen}
+                        onChange={e => setSettings({ ...settings, isOpen: e.target.checked })}
+                        className="w-4 h-4 text-orange-500 rounded accent-orange-500"
+                      />
+                      <label htmlFor="isOpenCheck" className="text-white font-medium">Registration Status Open</label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-orange-500 hover:bg-orange-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-orange-500/30 mt-3 font-['Anton']"
+                    >
+                      Save All Customizations
+                    </button>
+                  </form>
+                </div>
+
+                {/* Registration Controls & Destructive Reset */}
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-2xl space-y-5 shadow-xl">
+                  <div className="flex items-start gap-3">
+                    <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border ${
+                      settings.isOpen
+                        ? 'bg-orange-500/10 border-orange-500/30 text-orange-400'
+                        : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+                    }`}>
+                      <Power className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-sm uppercase tracking-wider font-['Anton']">
+                        Registration Control
+                      </h3>
+                      <p className="text-[10px] text-zinc-500 mt-1">
+                        This status is shared globally through Supabase.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className={`rounded-2xl border p-4 ${
+                    settings.isOpen
+                      ? 'bg-orange-500/10 border-orange-500/30'
+                      : 'bg-rose-500/10 border-rose-500/30'
+                  }`}>
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-[10px] text-zinc-400 uppercase tracking-widest">Current Status</div>
+                        <div className={`text-xl font-black font-['Anton'] mt-1 ${
+                          settings.isOpen ? 'text-orange-400' : 'text-rose-400'
+                        }`}>
+                          {settings.isOpen ? 'REGISTRATION OPEN' : 'REGISTRATION CLOSED'}
+                        </div>
+                      </div>
+                      <span className={`px-3 py-1.5 rounded-full text-[10px] font-black border ${
+                        settings.isOpen
+                          ? 'bg-orange-500/10 text-orange-400 border-orange-500/30'
+                          : 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+                      }`}>
+                        {settings.isOpen ? 'LIVE' : 'OFF'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      disabled={settingsSyncing || settings.isOpen}
+                      onClick={() => handleRegistrationToggle(true)}
+                      className="py-3 rounded-xl bg-orange-500 hover:bg-orange-400 disabled:opacity-40 disabled:cursor-not-allowed text-black font-black text-xs uppercase font-['Anton'] transition-all"
+                    >
+                      OPEN REGISTRATION
+                    </button>
+                    <button
+                      type="button"
+                      disabled={settingsSyncing || !settings.isOpen}
+                      onClick={() => handleRegistrationToggle(false)}
+                      className="py-3 rounded-xl bg-rose-500 hover:bg-rose-400 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-xs uppercase font-['Anton'] transition-all"
+                    >
+                      CLOSE REGISTRATION
+                    </button>
+                  </div>
+
+                  <div className="border-t border-white/10 pt-5">
+                    <div className="flex items-start gap-3 mb-3">
+                      <Trash2 className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-sm font-bold text-white uppercase font-['Anton']">Danger Zone</div>
+                        <p className="text-[10px] text-zinc-500 mt-1 leading-relaxed">
+                          Permanently delete every registration record currently stored in the registration database.
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={settingsSyncing || participants.length === 0}
+                      onClick={() => setResetModalOpen(true)}
+                      className="w-full py-3.5 rounded-xl bg-rose-950/60 hover:bg-rose-900/70 disabled:opacity-40 disabled:cursor-not-allowed text-rose-300 border border-rose-500/40 font-black text-xs uppercase tracking-wider font-['Anton'] transition-all"
+                    >
+                      RESET ALL REGISTRATIONS
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Participant Management Table */}
+              <div className="md:col-span-2 space-y-6">
+                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-2xl space-y-6 shadow-xl">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h3 className="font-bold text-white text-base uppercase tracking-wider font-['Anton']">
+                      Participant Queue ({filteredParticipants.length})
+                    </h3>
+
+                    <select
+                      value={paymentFilter}
+                      onChange={e => setPaymentFilter(e.target.value)}
+                      className="bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-zinc-200"
+                    >
+                      <option value="ALL">All Payments</option>
+                      <option value="PENDING">PENDING</option>
+                      <option value="VERIFIED">VERIFIED</option>
+                      <option value="REJECTED">REJECTED</option>
+                    </select>
+                  </div>
+
+                  <input
+                    type="text"
+                    placeholder="Search by Name, Reg ID, TrxID, Code, Email..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-orange-500 focus:outline-none"
+                  />
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-white/10 text-zinc-400 font-mono uppercase text-[10px]">
+                          <th className="py-3 px-2">Reg ID</th>
+                          <th className="py-3 px-2">Participant</th>
+                          <th className="py-3 px-2">TrxID</th>
+                          <th className="py-3 px-2">Payment</th>
+                          <th className="py-3 px-2">Pass Code</th>
+                          <th className="py-3 px-2">Check-In</th>
+                          <th className="py-3 px-2">Rejection</th>
+                          <th className="py-3 px-2 text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {filteredParticipants.length === 0 ? (
+                          <tr>
+                            <td colSpan="8" className="py-8 text-center text-zinc-500">
+                              No records match criteria.
+                            </td>
+                          </tr>
+                        ) : (
+                          filteredParticipants.map((p) => (
+                            <tr key={p.regId} className="hover:bg-white/5 transition-colors">
+                              <td className="py-3.5 px-2 font-mono font-bold text-orange-400">{p.regId}</td>
+                              <td className="py-3.5 px-2">
+                                <div className="font-bold text-white">{p.fullName}</div>
+                                <div className="text-[10px] text-zinc-400">{p.school}</div>
+                              </td>
+                              <td className="py-3.5 px-2 font-mono text-zinc-300">{p.trxId}</td>
+                              <td className="py-3.5 px-2">
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                                  p.paymentStatus === 'VERIFIED' ? 'bg-orange-500/20 text-orange-400' :
+                                  p.paymentStatus === 'REJECTED' ? 'bg-rose-500/20 text-rose-300' :
+                                  'bg-amber-500/20 text-amber-300'
+                                }`}>
+                                  {p.paymentStatus}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-2 font-mono font-bold text-zinc-200">
+                                {p.verificationCode || '—'}
+                              </td>
+                              <td className="py-3.5 px-2">
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${p.checkInStatus === 'CHECKED_IN' ? 'bg-orange-500/20 text-orange-400' : 'bg-zinc-500/20 text-zinc-400'}`}>
+                                  {p.checkInStatus === 'CHECKED_IN' ? 'CHECKED IN' : 'NOT CHECKED IN'}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-2 text-[10px] text-zinc-400 max-w-[180px]">
+                                {p.rejectionReason || '—'}
+                              </td>
+                              <td className="py-3.5 px-2 text-right">
+                                {p.paymentStatus === 'PENDING' ? (
+                                  <div className="flex justify-end gap-1.5">
+                                    <button
+                                      onClick={() => setVerifyTarget(p)}
+                                      className="px-3 py-1 bg-orange-500 hover:bg-orange-400 text-black font-extrabold text-[10px] rounded uppercase transition-all shadow-sm shadow-orange-500/30"
+                                    >
+                                      Verify
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        setRejectTarget(p);
+                                        setRejectReasonInput('');
+                                      }}
+                                      className="px-3 py-1 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 font-bold text-[10px] rounded uppercase transition-all"
+                                    >
+                                      Reject
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <span className="text-[10px] text-zinc-500 font-mono">Completed</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        )}
+
+      </main>
+
+      {/* CUSTOM VERIFY CONFIRMATION MODAL */}
+      {verifyTarget && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-zinc-900 border border-orange-500/40 rounded-3xl p-7 max-w-md w-full space-y-6 shadow-2xl relative">
+            <button
+              onClick={() => setVerifyTarget(null)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center space-y-2">
+              <div className="w-14 h-14 bg-orange-500/20 border border-orange-500/40 rounded-2xl flex items-center justify-center mx-auto text-orange-400">
+                <CheckCircle className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl font-black text-white font-['Anton'] uppercase">Verify Payment Confirmation</h3>
+              <p className="text-xs text-zinc-300">Have you verified this transaction in your bKash merchant panel?</p>
+            </div>
+
+            <div className="bg-black/60 border border-white/10 rounded-2xl p-4 text-xs space-y-2 font-mono text-zinc-300">
+              <div>Participant: <span className="text-white font-bold">{verifyTarget.fullName}</span></div>
+              <div>Reg ID: <span className="text-orange-400 font-bold">{verifyTarget.regId}</span></div>
+              <div>bKash TrxID: <span className="text-orange-400 font-bold">{verifyTarget.trxId}</span></div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setVerifyTarget(null)}
+                className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase rounded-xl transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={executeConfirmVerify}
+                className="flex-1 py-3 bg-orange-500 hover:bg-orange-400 text-black font-black text-xs uppercase rounded-xl transition-all shadow-lg shadow-orange-500/30 font-['Anton']"
+              >
+                Approve & Issue Code
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CUSTOM REJECT PROMPT MODAL */}
+      {rejectTarget && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-zinc-900 border border-rose-500/40 rounded-3xl p-7 max-w-md w-full space-y-6 shadow-2xl relative">
+            <button
+              onClick={() => setRejectTarget(null)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center space-y-2">
+              <div className="w-14 h-14 bg-rose-500/20 border border-rose-500/40 rounded-2xl flex items-center justify-center mx-auto text-rose-400">
+                <AlertTriangle className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl font-black text-white font-['Anton'] uppercase">Reject Payment</h3>
+              <p className="text-xs text-zinc-300">Provide a reason for rejecting payment for {rejectTarget.fullName}</p>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs text-zinc-400 block font-medium">Rejection Reason</label>
+              <textarea
+                rows="3"
+                value={rejectReasonInput}
+                onChange={e => setRejectReasonInput(e.target.value)}
+                placeholder="e.g. Invalid Transaction ID or Amount mismatch"
+                className="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-rose-500 focus:outline-none"
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setRejectTarget(null)}
+                className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase rounded-xl transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={executeConfirmReject}
+                className="flex-1 py-3 bg-rose-500 hover:bg-rose-400 text-white font-black text-xs uppercase rounded-xl transition-all shadow-lg shadow-rose-500/30 font-['Anton']"
+              >
+                Confirm Rejection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RESET ALL REGISTRATIONS — PASSWORD CONFIRMATION MODAL */}
+      {resetModalOpen && (
+        <div className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-2xl flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-zinc-900 border border-rose-500/40 rounded-3xl p-7 max-w-md w-full space-y-6 shadow-2xl relative">
+            <button
+              onClick={() => { setResetModalOpen(false); setResetPass(''); }}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+              disabled={settingsSyncing}
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center space-y-3">
+              <div className="w-16 h-16 bg-rose-500/10 border border-rose-500/40 rounded-2xl flex items-center justify-center mx-auto text-rose-400">
+                <Trash2 className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl font-black text-white font-['Anton'] uppercase">Reset All Registrations</h3>
+              <p className="text-xs text-rose-300 leading-relaxed">
+                WARNING: This permanently deletes all registration records from the database. This action cannot be undone.
+              </p>
+              <div className="text-sm font-black text-white">
+                Current records: <span className="text-rose-400">{participants.length}</span>
+              </div>
+            </div>
+
+            <form
+              onSubmit={(e) => { e.preventDefault(); executeResetAllRegistrations(); }}
+              className="space-y-4"
+            >
+              <label className="text-xs text-zinc-400 block">Re-enter Admin Password to continue</label>
+              <input
+                type="password"
+                required
+                autoFocus
+                value={resetPass}
+                onChange={e => setResetPass(e.target.value)}
+                placeholder="Admin password"
+                className="w-full bg-black/60 border border-rose-500/20 rounded-xl px-4 py-3.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+              />
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => { setResetModalOpen(false); setResetPass(''); }}
+                  disabled={settingsSyncing}
+                  className="flex-1 py-3 bg-white/10 hover:bg-white/20 disabled:opacity-40 text-white font-bold text-xs uppercase rounded-xl transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={settingsSyncing}
+                  className="flex-1 py-3 bg-rose-500 hover:bg-rose-400 disabled:opacity-40 text-white font-black text-xs uppercase rounded-xl transition-all shadow-lg shadow-rose-500/30 font-['Anton']"
+                >
+                  {settingsSyncing ? 'RESETTING...' : 'DELETE EVERYTHING'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Login Modal */}
+      {adminModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-2xl flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-zinc-900 border border-white/10 rounded-3xl p-8 max-w-sm w-full space-y-6 shadow-2xl relative">
+            <button
+              onClick={() => setAdminModalOpen(false)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center space-y-2">
+              <div className="w-14 h-14 bg-orange-500/10 border border-orange-500/30 rounded-2xl flex items-center justify-center mx-auto text-orange-400">
+                <Lock className="w-7 h-7" />
+              </div>
+              <h3 className="text-2xl font-black text-white font-['Anton'] uppercase">Admin Authentication</h3>
+              <p className="text-xs text-zinc-400">Enter administrator access password</p>
+            </div>
+
+            <form onSubmit={handleAdminLogin} className="space-y-4">
+              <input
+                type="password"
+                required
+                placeholder="Enter administrator password"
+                value={adminPass}
+                onChange={e => setAdminPass(e.target.value)}
+                className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:border-orange-500 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-orange-500/30 font-['Anton']"
+              >
+                Access Command Center
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 py-8 mt-20 relative z-10 text-center text-xs text-zinc-500 space-y-1">
+        <p>{settings.footerLine1 || "© ORGANISED BY AURAIC. All rights reserved."}</p>
+        <p>{settings.footerLine2 || "SUNNY"}</p>
+        <p>{settings.footerLine3 || "BYZID"}</p>
+      </footer>
+    </div>
+  );
+}
+
+
+
+createRoot(document.getElementById('root')).render(<App />);
+
+  </script>
+
+<!-- BACKGROUND MUSIC SYSTEM — ONLY ADDITION -->
+<script>
+  const BACKGROUND_YOUTUBE_URL = "https://youtu.be/bP9gMpl1gyQ";
+
+  (function () {
+    let player = null;
+    let playerReady = false;
+    let started = false;
+
+    const match = BACKGROUND_YOUTUBE_URL.match(
+      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([^?&/]+)/i
+    );
+    const videoId = match ? match[1] : null;
+    if (!videoId) return;
+
+    // Create the YouTube player before the user's first interaction.
+    // It stays in a valid embedded-player viewport; controls are disabled.
+    const host = document.createElement("div");
+    host.id = "background-youtube-player";
+    host.style.cssText =
+      "position:fixed;right:0;bottom:0;width:200px;height:200px;z-index:1;opacity:0.01;pointer-events:none;";
+    document.body.appendChild(host);
+
+    window.onYouTubeIframeAPIReady = function () {
+      player = new YT.Player("background-youtube-player", {
+        width: "200",
+        height: "200",
+        videoId: videoId,
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          playsinline: 1,
+          rel: 0,
+          loop: 1,
+          playlist: videoId,
+          modestbranding: 1
+        },
+        events: {
+          onReady: function (event) {
+            playerReady = true;
+            event.target.setVolume(100);
+          }
+        }
+      });
+    };
+
+    const api = document.createElement("script");
+    api.src = "https://www.youtube.com/iframe_api";
+    api.async = true;
+    document.head.appendChild(api);
+
+    function startMusicFromUserGesture() {
+      if (started) return;
+
+      // The click/tap itself is the user gesture. Once the API player
+      // is ready, this starts unmuted playback.
+      if (playerReady && player) {
+        started = true;
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+      }
+    }
+
+    ["pointerdown", "touchstart", "click", "keydown"].forEach(function (eventName) {
+      document.addEventListener(eventName, startMusicFromUserGesture, true);
+    });
+  })();
+</script>
+<!-- END BACKGROUND MUSIC SYSTEM -->
+
+</body>
+</html>
